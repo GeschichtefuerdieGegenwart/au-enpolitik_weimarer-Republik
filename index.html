@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weimarer Außenpolitik: Entscheidungsspiel</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 5px solid var(--accent);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 2rem;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 5px;
+            background-color: var(--light);
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+        
+        .content-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .decision-points {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            display: none; /* Anfangs ausgeblendet */
+        }
+        
+        .pro-con {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        
+        .pro {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        .con {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .pro-con h3 {
+            margin-top: 0;
+            color: var(--dark);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .button-primary {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .button-secondary {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .consequence {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            border-top: 4px solid var(--accent);
+            display: none;
+        }
+        
+        .nsdap-reaction {
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 1rem;
+            border-left: 4px solid var(--danger);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+        
+        .final-stats {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        
+        .final-stat-item {
+            display: inline-block;
+            margin: 1rem;
+            padding: 1rem 2rem;
+            background-color: var(--light);
+            border-radius: 5px;
+            min-width: 150px;
+        }
+        
+        .final-stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .historical-context {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--light);
+            border-radius: 5px;
+            display: none; /* Anfangs ausgeblendet */
+        }
+        
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--accent);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .continue-button {
+            display: none;
+            margin: 20px auto;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .continue-button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .decision-points {
+                flex-direction: column;
+            }
+            
+            .timeline::before {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Weimarer Republik: Außenpolitische Entscheidungen</h1>
+            <p>Treffen Sie historische Entscheidungen und erleben Sie die Konsequenzen</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-item">
+                <div>Arbeitslosigkeit</div>
+                <div class="stat-value" id="arbeitslosigkeit">10%</div>
+            </div>
+            <div class="stat-item">
+                <div>Inflation</div>
+                <div class="stat-value" id="inflation">5%</div>
+            </div>
+            <div class="stat-item">
+                <div>Wirtschaftswachstum</div>
+                <div class="stat-value" id="wirtschaft">2%</div>
+            </div>
+            <div class="stat-item">
+                <div>NSDAP-Ergebnis</div>
+                <div class="stat-value" id="nsdap">3%</div>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="content-card">
+                <h2>1924: Der Dawes-Plan</h2>
+                <p>Nach der Hyperinflation von 1923 schlägt der amerikanische Bankier Charles G. Dawes einen Plan zur Neuordnung der deutschen Reparationszahlungen vor. Der Plan sieht vor:</p>
+                
+                <ul>
+                    <li>Stufenweise Erhöhung der Zahlungen auf 2,5 Mrd. Reichsmark pro Jahr</li>
+                    <li>Internationale Kredite zur Stabilisierung der deutschen Währung</li>
+                    <li>Französischer Rückzug aus dem Ruhrgebiet</li>
+                </ul>
+                
+                <div class="buttons">
+                    <button class="button button-primary" onclick="vote('dawes', true)">Für den Dawes-Plan</button>
+                    <button class="button button-secondary" onclick="vote('dawes', false)">Gegen den Dawes-Plan</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result" class="consequence" style="display: none;"></div>
+        <button id="continueBtn" class="continue-button" onclick="prepareNextDecision()">Weiter</button>
+    </div>
+
+    <script>
+        let stats = {
+            arbeitslosigkeit: 10,
+            inflation: 5,
+            wirtschaft: 2,
+            nsdap: 3
+        };
+
+        let currentDecision = '';
+        let decisionsMade = 0;
+        let historicalEvents = [
+            { year: 1924, title: "Dawes-Plan", description: "Neuordnung der Reparationszahlungen" },
+            { year: 1925, title: "Vertrag von Locarno", description: "Anerkennung der Westgrenze" },
+            { year: 1926, title: "Völkerbund-Beitritt", description: "Internationale Anerkennung" },
+            { year: 1926, title: "Berliner Vertrag", description: "Zusammenarbeit mit der Sowjetunion" },
+            { year: 1930, title: "Rheinlandräumung", description: "Ende der alliierten Besatzung" },
+            { year: 1929, title: "Young-Plan", description: "Endgültige Reparationsregelung" }
+        ];
+
+        function updateStats() {
+            document.getElementById('arbeitslosigkeit').textContent = stats.arbeitslosigkeit + '%';
+            document.getElementById('inflation').textContent = stats.inflation + '%';
+            document.getElementById('wirtschaft').textContent = stats.wirtschaft + '%';
+            document.getElementById('nsdap').textContent = stats.nsdap + '%';
+            
+            // Farbliche Anpassung basierend auf Werten
+            updateStatColor('arbeitslosigkeit', 15, 5);
+            updateStatColor('inflation', 10, 2);
+            updateStatColor('wirtschaft', 0, 4);
+            updateStatColor('nsdap', 10, 5);
+        }
+        
+        function updateStatColor(id, dangerThreshold, warningThreshold) {
+            const element = document.getElementById(id);
+            const value = stats[id];
+            
+            element.parentElement.style.backgroundColor = '';
+            
+            if (id === 'wirtschaft') {
+                if (value < warningThreshold) {
+                    element.parentElement.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                } else if (value > dangerThreshold) {
+                    element.parentElement.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+                }
+            } else {
+                if (value > dangerThreshold) {
+                    element.parentElement.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                } else if (value > warningThreshold) {
+                    element.parentElement.style.backgroundColor = 'rgba(243, 156, 18, 0.1)';
+                }
+            }
+        }
+
+        function endGame() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <div class="content-card">
+                    <h2>Ende des Spiels - Historische Auswertung</h2>
+                    
+                    <p>Sie haben alle wichtigen außenpolitischen Entscheidungen der Weimarer Republik getroffen. Hier ist Ihr Ergebnis:</p>
+                    
+                    <div class="final-stats">
+                        <div class="final-stat-item">
+                            <div>Arbeitslosigkeit</div>
+                            <div class="final-stat-value">${stats.arbeitslosigkeit}%</div>
+                        </div>
+                        <div class="final-stat-item">
+                            <div>Inflation</div>
+                            <div class="final-stat-value">${stats.inflation}%</div>
+                        </div>
+                        <div class="final-stat-item">
+                            <div>Wirtschaftswachstum</div>
+                            <div class="final-stat-value">${stats.wirtschaft}%</div>
+                        </div>
+                        <div class="final-stat-item">
+                            <div>NSDAP-Ergebnis</div>
+                            <div class="final-stat-value">${stats.nsdap}%</div>
+                        </div>
+                    </div>
+                    
+                    <h3>Historische Interpretation</h3>
+                    ${getFinalAnalysis()}
+                    
+                    <div class="timeline">
+                        <h3>Zeitleiste Ihrer Entscheidungen</h3>
+                        ${generateTimeline()}
+                    </div>
+                </div>
+            `;
+            document.getElementById('continueBtn').style.display = 'none';
+        }
+        
+        function getFinalAnalysis() {
+            let analysis = '';
+            
+            if (stats.nsdap >= 30) {
+                analysis = `<p>Ihre Entscheidungen haben zu einem starken Aufstieg der NSDAP geführt. Die wirtschaftlichen Schwierigkeiten und die wahrgenommene Demütigung Deutschlands durch die internationale Gemeinschaft haben extremistischen Kräften Auftrieb gegeben.</p>`;
+            } else if (stats.nsdap >= 15) {
+                analysis = `<p>Die NSDAP konnte zwar an Einfluss gewinnen, aber die Weimarer Republik bleibt stabil. Ihre Entscheidungen haben die wirtschaftliche und politische Lage insgesamt stabilisiert, auch wenn nationalistische Kräfte noch immer eine Bedrohung darstellen.</p>`;
+            } else {
+                analysis = `<p>Herzlichen Glückwunsch! Ihre Entscheidungen haben die Weimarer Republik gestärkt und den Aufstieg extremistischer Parteien verhindert. Die wirtschaftliche Erholung und internationale Anerkennung haben Deutschland stabilisiert.</p>`;
+            }
+            
+            if (stats.wirtschaft < 0) {
+                analysis += `<p>Die wirtschaftliche Situation bleibt jedoch angespannt. Die hohe Arbeitslosigkeit und das geringe Wachstum könnten langfristig Probleme verursachen.</p>`;
+            } else if (stats.wirtschaft > 3) {
+                analysis += `<p>Die Wirtschaft zeigt starkes Wachstum, was die Stabilität der Republik weiter festigt.</p>`;
+            }
+            
+            return analysis;
+        }
+        
+        function generateTimeline() {
+            let timelineHTML = '';
+            historicalEvents.forEach(event => {
+                timelineHTML += `
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">${event.year}</div>
+                            <h4>${event.title}</h4>
+                            <p>${event.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            return timelineHTML;
+        }
+
+        function vote(decision, isFor) {
+            currentDecision = decision;
+            const resultDiv = document.getElementById('result');
+            let resultText = '';
+            let nsdapReaction = '';
+
+            switch (decision) {
+                case 'dawes':
+                    if (isFor) {
+                        resultText = '<h3>Ergebnis: Annahme des Dawes-Plans</h3>';
+                        resultText += '<p>Der Dawes-Plan wird umgesetzt und führt zu:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Stabilisierung der Währung und Beendigung der Hyperinflation</li>';
+                        resultText += '<li>Internationale Kredite fließen in die deutsche Wirtschaft</li>';
+                        resultText += '<li>Französische Truppen ziehen aus dem Ruhrgebiet ab</li>';
+                        resultText += '<li>Wirtschaft beginnt sich zu erholen</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Stabilisierung der Wirtschaft nach der Hyperinflation</li>
+                                        <li>Möglichkeit für internationale Kredite und Investitionen</li>
+                                        <li>Beendigung der Ruhrbesetzung</li>
+                                        <li>Schaffung von Vertrauen in die deutsche Wirtschaft</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Langfristige Bindung an Reparationszahlungen</li>
+                                        <li>Ausländische Kontrolle über Reichsbank und Eisenbahnen</li>
+                                        <li>Wirtschaftliche Abhängigkeit vom Ausland</li>
+                                        <li>Nationale Demütigung durch ausländische Einmischung</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Der Dawes-Plan wurde 1924 verabschiedet und markierte den Beginn der "Goldenen Zwanziger". Die US-Kredite führten zu einem wirtschaftlichen Aufschwung, machten Deutschland aber auch abhängig von ausländischem Kapital.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP nutzt die Debatte für ihre Propaganda: "Der Dawes-Plan macht Deutschland zum Sklaven der internationalen Finanzwelt! Die Reparationen sind ein fortwährender Raubvertrag!"';
+                        
+                        stats.inflation -= 3;
+                        stats.wirtschaft += 2;
+                        stats.arbeitslosigkeit -= 2;
+                        stats.nsdap += 1;
+                        
+                        historicalEvents[0].description += " (angenommen)";
+                    } else {
+                        resultText = '<h3>Ergebnis: Ablehnung des Dawes-Plans</h3>';
+                        resultText += '<p>Ohne den Dawes-Plan kommt es zu:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Fortdauer der wirtschaftlichen Instabilität</li>';
+                        resultText += '<li>Keine internationalen Kredite für Deutschland</li>';
+                        resultText += '<li>Französische Besatzung des Ruhrgebiets bleibt bestehen</li>';
+                        resultText += '<li>Wirtschaftliche Erholung verzögert sich</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Stabilisierung der Wirtschaft nach der Hyperinflation</li>
+                                        <li>Möglichkeit für internationale Kredite und Investitionen</li>
+                                        <li>Beendigung der Ruhrbesetzung</li>
+                                        <li>Schaffung von Vertrauen in die deutsche Wirtschaft</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Langfristige Bindung an Reparationszahlungen</li>
+                                        <li>Ausländische Kontrolle über Reichsbank und Eisenbahnen</li>
+                                        <li>Wirtschaftliche Abhängigkeit vom Ausland</li>
+                                        <li>Nationale Demütigung durch ausländische Einmischung</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Der Dawes-Plan wurde 1924 verabschiedet und markierte den Beginn der "Goldenen Zwanziger". Die US-Kredite führten zu einem wirtschaftlichen Aufschwung, machten Deutschland aber auch abhängig von ausländischem Kapital.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP feiert die Ablehnung: "Deutschland darf sich nicht den Fesseln des Auslands beugen! Wir fordern die vollständige Aufhebung des Versailler Vertrags!"';
+                        
+                        stats.inflation += 5;
+                        stats.wirtschaft -= 2;
+                        stats.arbeitslosigkeit += 3;
+                        stats.nsdap += 5;
+                        
+                        historicalEvents[0].description += " (abgelehnt)";
+                    }
+                    break;
+                case 'locarno':
+                    if (isFor) {
+                        resultText = '<h3>Ergebnis: Unterzeichnung des Locarno-Vertrags</h3>';
+                        resultText += '<p>Der Vertrag von Locarno führt zu:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Anerkennung der deutschen Westgrenze durch Frankreich und Belgien</li>';
+                        resultText += '<li>Deutschland wird als gleichberechtigter Partner akzeptiert</li>';
+                        resultText += '<li>Friedensnobelpreis für Außenminister Stresemann</li>';
+                        resultText += '<li>Verbesserung des internationalen Ansehens</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Friedenssicherung in Europa</li>
+                                        <li>Internationale Anerkennung Deutschlands</li>
+                                        <li>Ende der Isolationspolitik</li>
+                                        <li>Schaffung von Vertrauen zwischen den Nationen</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Verzicht auf Gebietsansprüche im Westen</li>
+                                        <li>Keine Garantie für die Ostgrenzen</li>
+                                        <li>Für die NSDAP ist Locarno ein "Verzichtfrieden"</li>
+                                        <li>Nationalistische Kreise fühlen sich verraten</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Die Verträge von Locarno markierten einen Höhepunkt der Verständigungspolitik unter Außenminister Stresemann. Deutschland erhielt einen ständigen Sitz im Völkerbund und die Alliierten begannen mit der Räumung des Rheinlands.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP wettert gegen den Vertrag: "Locarno ist Verrat! Die Anerkennung der Westgrenze bedeutet den dauerhaften Verlust deutscher Gebiete!"';
+                        
+                        stats.wirtschaft += 1;
+                        stats.nsdap += 1;
+                        
+                        historicalEvents[1].description += " (unterzeichnet)";
+                    } else {
+                        resultText = '<h3>Ergebnis: Ablehnung des Locarno-Vertrags</h3>';
+                        resultText += '<p>Ohne den Vertrag von Locarno:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Internationale Isolation Deutschlands bleibt bestehen</li>';
+                        resultText += '<li>Spannungen mit Frankreich und Belgien nehmen zu</li>';
+                        resultText += '<li>Keine diplomatischen Erfolge für die Weimarer Republik</li>';
+                        resultText += '<li>Wirtschaftliche Zusammenarbeit erschwert</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Friedenssicherung in Europa</li>
+                                        <li>Internationale Anerkennung Deutschlands</li>
+                                        <li>Ende der Isolationspolitik</li>
+                                        <li>Schaffung von Vertrauen zwischen den Nationen</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Verzicht auf Gebietsansprüche im Westen</li>
+                                        <li>Keine Garantie für die Ostgrenzen</li>
+                                        <li>Für die NSDAP ist Locarno ein "Verzichtfrieden"</li>
+                                        <li>Nationalistische Kreise fühlen sich verraten</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Die Verträge von Locarno markierten einen Höhepunkt der Verständigungspolitik unter Außenminister Stresemann. Deutschland erhielt einen ständigen Sitz im Völkerbund und die Alliierten begannen mit der Räumung des Rheinlands.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP begrüßt die Ablehnung: "Deutschland darf sich nicht mit den Siegermächten arrangieren! Wir fordern Revision des Versailler Vertrags!"';
+                        
+                        stats.nsdap += 5;
+                        
+                        historicalEvents[1].description += " (abgelehnt)";
+                    }
+                    break;
+                case 'voelkerbund':
+                    if (isFor) {
+                        resultText = '<h3>Ergebnis: Beitritt zum Völkerbund</h3>';
+                        resultText += '<p>Der Eintritt in den Völkerbund bewirkt:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Deutschland wird als gleichberechtigtes Mitglied aufgenommen</li>';
+                        resultText += '<li>Möglichkeit zur friedlichen Konfliktlösung</li>';
+                        resultText += '<li>Verbesserung des internationalen Ansehens</li>';
+                        resultText += '<li>Stärkung der Position in Europa</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Endgültige Rückkehr Deutschlands in die Völkergemeinschaft</li>
+                                        <li>Möglichkeit zur Revision des Versailler Vertrags</li>
+                                        <li>Friedenssicherung in Europa</li>
+                                        <li>Stärkung der internationalen Position</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Völkerbund als Instrument der Siegermächte</li>
+                                        <li>Gefahr der Einmischung in innere Angelegenheiten</li>
+                                        <li>Keine echte Gleichberechtigung</li>
+                                        <li>Nationalistische Kreise lehnen "Siegerjustiz" ab</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Deutschland trat am 8. September 1926 unter großem Jubel in Genf in den Völkerbund ein. Der Beitritt war ein großer Erfolg für Stresemanns Außenpolitik und stärkte das Ansehen der Republik.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP kritisiert den Schritt: "Der Völkerbund ist ein Instrument der Siegermächte zur Kontrolle Deutschlands! Wir fordern nationale Souveränität!"';
+                        
+                        stats.wirtschaft += 1;
+                        stats.nsdap += 1;
+                        
+                        historicalEvents[2].description += " (beigetreten)";
+                    } else {
+                        resultText = '<h3>Ergebnis: Kein Beitritt zum Völkerbund</h3>';
+                        resultText += '<p>Ohne Mitgliedschaft im Völkerbund:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Deutschland bleibt international isoliert</li>';
+                        resultText += '<li>Keine Möglichkeit zur diplomatischen Einflussnahme</li>';
+                        resultText += '<li>Schwächung der Position in Europa</li>';
+                        resultText += '<li>Verpasste Chancen zur Friedenssicherung</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Endgültige Rückkehr Deutschlands in die Völkergemeinschaft</li>
+                                        <li>Möglichkeit zur Revision des Versailler Vertrags</li>
+                                        <li>Friedenssicherung in Europa</li>
+                                        <li>Stärkung der internationalen Position</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Völkerbund als Instrument der Siegermächte</li>
+                                        <li>Gefahr der Einmischung in innere Angelegenheiten</li>
+                                        <li>Keine echte Gleichberechtigung</li>
+                                        <li>Nationalistische Kreise lehnen "Siegerjustiz" ab</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Deutschland trat am 8. September 1926 unter großem Jubel in Genf in den Völkerbund ein. Der Beitritt war ein großer Erfolg für Stresemanns Außenpolitik und stärkte das Ansehen der Republik.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP jubelt: "Deutschland darf sich nicht den Urteilen einer Siegerjustiz unterwerfen! Wir fordern nationale Unabhängigkeit!"';
+                        
+                        stats.nsdap += 5;
+                        
+                        historicalEvents[2].description += " (nicht beigetreten)";
+                    }
+                    break;
+                case 'berliner':
+                    if (isFor) {
+                        resultText = '<h3>Ergebnis: Unterzeichnung des Berliner Vertrags</h3>';
+                        resultText += '<p>Der Berliner Vertrag mit der Sowjetunion führt zu:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Vertiefung der wirtschaftlichen Zusammenarbeit</li>';
+                        resultText += '<li>Geheime militärische Kooperation (Umgehung der Versailler Beschränkungen)</li>';
+                        resultText += '<li>Gegenpol zur Westorientierung</li>';
+                        resultText += '<li>Erweiterung der außenpolitischen Optionen</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Erweiterung der außenpolitischen Optionen</li>
+                                        <li>Wirtschaftliche Vorteile durch Handel</li>
+                                        <li>Möglichkeit zur Umgehung der Versailler Beschränkungen</li>
+                                        <li>Gegengewicht zur Westorientierung</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Gefahr eines Bündnisses mit dem Kommunismus</li>
+                                        <li>Belastung der Beziehungen zu den Westmächten</li>
+                                        <li>Ideologische Bedenken gegen das Sowjetregime</li>
+                                        <li>Nationalistische Kreise lehnen Zusammenarbeit ab</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Der Vertrag war eine Ergänzung zum Rapallo-Vertrag von 1922 und ermöglichte Deutschland geheime Militärkooperation (Panzer- und Fliegerschulen in der Sowjetunion). Die Westmächte betrachteten dies mit Argwohn.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP nutzt die Situation: "Die Zusammenarbeit mit den Bolschewisten gefährdet Deutschland! Der Kommunismus ist unsere größte Bedrohung!"';
+                        
+                        stats.wirtschaft += 1;
+                        stats.nsdap += 1;
+                        
+                        historicalEvents[3].description += " (unterzeichnet)";
+                    } else {
+                        resultText = '<h3>Ergebnis: Ablehnung des Berliner Vertrags</h3>';
+                        resultText += '<p>Ohne den Berliner Vertrag:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Keine Zusammenarbeit mit der Sowjetunion</li>';
+                        resultText += '<li>Stärkere Abhängigkeit von den Westmächten</li>';
+                        resultText += '<li>Keine Möglichkeit zur Umgehung der Versailler Beschränkungen</li>';
+                        resultText += '<li>Eingeschränkte außenpolitische Optionen</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Erweiterung der außenpolitischen Optionen</li>
+                                        <li>Wirtschaftliche Vorteile durch Handel</li>
+                                        <li>Möglichkeit zur Umgehung der Versailler Beschränkungen</li>
+                                        <li>Gegengewicht zur Westorientierung</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Gefahr eines Bündnisses mit dem Kommunismus</li>
+                                        <li>Belastung der Beziehungen zu den Westmächten</li>
+                                        <li>Ideologische Bedenken gegen das Sowjetregime</li>
+                                        <li>Nationalistische Kreise lehnen Zusammenarbeit ab</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Der Vertrag war eine Ergänzung zum Rapallo-Vertrag von 1922 und ermöglichte Deutschland geheime Militärkooperation (Panzer- und Fliegerschulen in der Sowjetunion). Die Westmächte betrachteten dies mit Argwohn.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP begrüßt die Entscheidung: "Deutschland darf sich nicht mit dem bolschewistischen Feind einlassen! Nationale Interessen zuerst!"';
+                        
+                        stats.nsdap += 5;
+                        
+                        historicalEvents[3].description += " (abgelehnt)";
+                    }
+                    break;
+                case 'rheinland':
+                    if (isFor) {
+                        resultText = '<h3>Ergebnis: Rheinlandräumung</h3>';
+                        resultText += '<p>Die Räumung des Rheinlands bewirkt:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Ende der alliierten Besatzung nach 11 Jahren</li>';
+                        resultText += '<li>Wiederherstellung der vollen Souveränität</li>';
+                        resultText += '<li>Symbolischer Erfolg für die deutsche Außenpolitik</li>';
+                        resultText += '<li>Stärkung des Vertrauens in die Republik</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Ende der Besatzung nach 11 Jahren</li>
+                                        <li>Wiederherstellung der territorialen Integrität</li>
+                                        <li>Symbol für den Erfolg der Verständigungspolitik</li>
+                                        <li>Stärkung des Vertrauens in die Republik</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Räumung kommt zu spät</li>
+                                        <li>Versailler Vertrag bleibt in Kraft</li>
+                                        <li>Nationalistische Kreise fordern sofortige vollständige Räumung</li>
+                                        <li>NSDAP nutzt Thema für Propaganda</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Die Räumung erfolgte vorzeitig im Jahr 1930 und war ein großer Erfolg für die deutsche Außenpolitik. Allerdings nutzten nationalistische Kreise das Thema weiter für ihre Propaganda gegen den "Schandfrieden" von Versailles.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP relativiert den Erfolg: "Die Rheinlandräumung ist nur ein kleiner Schritt! Der Versailler Vertrag muss vollständig gekündigt werden!"';
+                        
+                        stats.wirtschaft += 1;
+                        stats.nsdap += 1;
+                        
+                        historicalEvents[4].description += " (durchgeführt)";
+                    } else {
+                        resultText = '<h3>Ergebnis: Keine Rheinlandräumung</h3>';
+                        resultText += '<p>Ohne die Räumung:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Alliierte Besatzung bleibt bestehen</li>';
+                        resultText += '<li>Wahrnehmung als nationale Demütigung</li>';
+                        resultText += '<li>Schwächung der Legitimität der Republik</li>';
+                        resultText += '<li>Wirtschaftliche Belastung durch Besatzung</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Ende der Besatzung nach 11 Jahren</li>
+                                        <li>Wiederherstellung der territorialen Integrität</li>
+                                        <li>Symbol für den Erfolg der Verständigungspolitik</li>
+                                        <li>Stärkung des Vertrauens in die Republik</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Räumung kommt zu spät</li>
+                                        <li>Versailler Vertrag bleibt in Kraft</li>
+                                        <li>Nationalistische Kreise fordern sofortige vollständige Räumung</li>
+                                        <li>NSDAP nutzt Thema für Propaganda</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Die Räumung erfolgte vorzeitig im Jahr 1930 und war ein großer Erfolg für die deutsche Außenpolitik. Allerdings nutzten nationalistische Kreuse das Thema weiter für ihre Propaganda gegen den "Schandfrieden" von Versailles.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP schürt die Wut: "Die fortgesetzte Besetzung ist unerträglich! Wir fordern sofortige Räumung und Wiederherstellung deutscher Ehre!"';
+                        
+                        stats.nsdap += 5;
+                        
+                        historicalEvents[4].description += " (nicht durchgeführt)";
+                    }
+                    break;
+                case 'young':
+                    if (isFor) {
+                        resultText = '<h3>Ergebnis: Annahme des Young-Plans</h3>';
+                        resultText += '<p>Der Young-Plan führt zu:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Reduzierung der Reparationslast um 20%</li>';
+                        resultText += '<li>Endgültige Festlegung der Zahlungen bis 1988</li>';
+                        resultText += '<li>Internationale Kontrollen werden aufgehoben</li>';
+                        resultText += '<li>Wirtschaftliche Planungssicherheit</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Erhebliche Reduzierung der Lasten</li>
+                                        <li>Planungssicherheit für den Haushalt</li>
+                                        <li>Ende der ausländischen Kontrollen</li>
+                                        <li>Letzter Schritt zur Normalisierung</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Zahlungen über zwei Generationen</li>
+                                        <li>Nationale Demütigung durch fortgesetzte Zahlungen</li>
+                                        <li>NSDAP startet Kampagne gegen "Versklavung"</li>
+                                        <li>Volksbegehren zur Ablehnung des Plans</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Der Young-Plan wurde 1930 verabschiedet, aber durch die Weltwirtschaftskrise bald hinfällig. Die erbitterte Debatte darüber stärkte die NSDAP, die mit einer Kampagne gegen den "Tributplan" Aufmerksamkeit erregte.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP startet eine Kampagne: "Der Young-Plan zementiert die Versklavung Deutschlands für Generationen! Freiheit von den Reparationen!"';
+                        
+                        stats.wirtschaft += 1;
+                        stats.arbeitslosigkeit -= 1;
+                        stats.nsdap += 1;
+                        
+                        historicalEvents[5].description += " (angenommen)";
+                    } else {
+                        resultText = '<h3>Ergebnis: Ablehnung des Young-Plans</h3>';
+                        resultText += '<p>Ohne den Young-Plan:</p>';
+                        resultText += '<ul>';
+                        resultText += '<li>Reparationslast bleibt unverändert hoch</li>';
+                        resultText += '<li>Internationale Kontrollen bleiben bestehen</li>';
+                        resultText += '<li>Wirtschaftliche Unsicherheit</li>';
+                        resultText += '<li>Schwierigkeiten bei der Haushaltsplanung</li>';
+                        resultText += '</ul>';
+                        
+                        // Argumente und historischer Kontext
+                        resultText += `
+                            <div class="decision-points" style="display: block;">
+                                <div class="pro-con pro">
+                                    <h3>Argumente der Befürworter</h3>
+                                    <ul>
+                                        <li>Erhebliche Reduzierung der Lasten</li>
+                                        <li>Planungssicherheit für den Haushalt</li>
+                                        <li>Ende der ausländischen Kontrollen</li>
+                                        <li>Letzter Schritt zur Normalisierung</li>
+                                    </ul>
+                                </div>
+                                <div class="pro-con con">
+                                    <h3>Argumente der Gegner</h3>
+                                    <ul>
+                                        <li>Zahlungen über zwei Generationen</li>
+                                        <li>Nationale Demütigung durch fortgesetzte Zahlungen</li>
+                                        <li>NSDAP startet Kampagne gegen "Versklavung"</li>
+                                        <li>Volksbegehren zur Ablehnung des Plans</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="historical-context" style="display: block;">
+                                <strong>Historischer Kontext:</strong> Der Young-Plan wurde 1930 verabschiedet, aber durch die Weltwirtschaftskrise bald hinfällig. Die erbitterte Debatte darüber stärkte die NSDAP, die mit einer Kampagne gegen den "Tributplan" Aufmerksamkeit erregte.
+                            </div>
+                        `;
+                        
+                        nsdapReaction = 'Die NSDAP feiert: "Der Widerstand gegen die Reparationen wächst! Deutschland darf nicht zahlen für eine Lüge von Kriegsschuld!"';
+                        
+                        stats.wirtschaft -= 1;
+                        stats.arbeitslosigkeit += 1;
+                        stats.nsdap += 5;
+                        
+                        historicalEvents[5].description += " (abgelehnt)";
+                    }
+                    break;
+            }
+
+            resultDiv.innerHTML = resultText;
+            
+            if (nsdapReaction) {
+                resultDiv.innerHTML += `<div class="nsdap-reaction"><strong>NSDAP-Reaktion:</strong> ${nsdapReaction}</div>`;
+            }
+            
+            resultDiv.style.display = 'block';
+            document.getElementById('continueBtn').style.display = 'block';
+            updateStats();
+
+            decisionsMade++;
+        }
+
+        function prepareNextDecision() {
+            const resultDiv = document.getElementById('result');
+            const continueBtn = document.getElementById('continueBtn');
+            resultDiv.style.display = 'none';
+            continueBtn.style.display = 'none';
+            
+            const contentDiv = document.getElementById('content');
+            
+            if (decisionsMade >= 6) {
+                endGame();
+                return;
+            }
+            
+            switch (currentDecision) {
+                case 'dawes':
+                    contentDiv.innerHTML = `
+                        <div class="content-card">
+                            <h2>1925: Vertrag von Locarno</h2>
+                            <p>Die Locarno-Verträge sind eine Reihe von Abkommen, die im Oktober 1925 in Locarno (Schweiz) unterzeichnet wurden. Die wichtigsten Punkte:</p>
+                            
+                            <ul>
+                                <li>Anerkennung der deutschen Westgrenze durch Frankreich und Belgien</li>
+                                <li>Verzicht auf gewaltsame Grenzänderungen</li>
+                                <li>Schiedsverträge mit Polen und der Tschechoslowakei</li>
+                                <li>Deutschland wird als gleichberechtigter Partner anerkannt</li>
+                            </ul>
+                            
+                            <div class="buttons">
+                                <button class="button button-primary" onclick="vote('locarno', true)">Für Locarno</button>
+                                <button class="button button-secondary" onclick="vote('locarno', false)">Gegen Locarno</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'locarno':
+                    contentDiv.innerHTML = `
+                        <div class="content-card">
+                            <h2>1926: Eintritt in den Völkerbund</h2>
+                            <p>Der Völkerbund war die erste internationale Organisation, die sich die Friedenssicherung zum Ziel setzte. Ein Beitritt Deutschlands würde bedeuten:</p>
+                            
+                            <ul>
+                                <li>Vollwertige Mitgliedschaft mit ständigem Sitz im Rat</li>
+                                <li>Möglichkeit zur friedlichen Konfliktlösung</li>
+                                <li>Gleichberechtigung mit anderen Nationen</li>
+                                <li>Internationale Anerkennung der Republik</li>
+                            </ul>
+                            
+                            <div class="buttons">
+                                <button class="button button-primary" onclick="vote('voelkerbund', true)">Für den Beitritt</button>
+                                <button class="button button-secondary" onclick="vote('voelkerbund', false)">Gegen den Beitritt</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'voelkerbund':
+                    contentDiv.innerHTML = `
+                        <div class="content-card">
+                            <h2>1926: Berliner Vertrag mit der Sowjetunion</h2>
+                            <p>Der Berliner Vertrag ist ein Freundschafts- und Neutralitätsabkommen zwischen Deutschland und der Sowjetunion. Die wichtigsten Punkte:</p>
+                            
+                            <ul>
+                                <li>Neutralität im Fall eines Angriffs Dritter</li>
+                                <li>Vertiefung der wirtschaftlichen Zusammenarbeit</li>
+                                <li>Geheime militärische Kooperation</li>
+                                <li>Gegenpol zur Westorientierung</li>
+                            </ul>
+                            
+                            <div class="buttons">
+                                <button class="button button-primary" onclick="vote('berliner', true)">Für den Vertrag</button>
+                                <button class="button button-secondary" onclick="vote('berliner', false)">Gegen den Vertrag</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'berliner':
+                    contentDiv.innerHTML = `
+                        <div class="content-card">
+                            <h2>1926-1930: Rheinlandräumung</h2>
+                            <p>Als Folge des Vertrags von Locarno begann die alliierte Räumung des Rheinlands. Die wichtigsten Aspekte:</p>
+                            
+                            <ul>
+                                <li>Stufenweiser Abzug der Besatzungstruppen</li>
+                                <li>Endgültige Räumung bis 1930</li>
+                                <li>Wiederherstellung der vollen Souveränität</li>
+                                <li>Symbolischer Erfolg für die deutsche Außenpolitik</li>
+                            </ul>
+                            
+                            <div class="buttons">
+                                <button class="button button-primary" onclick="vote('rheinland', true)">Für die Räumung</button>
+                                <button class="button button-secondary" onclick="vote('rheinland', false)">Gegen die Räumung</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'rheinland':
+                    contentDiv.innerHTML = `
+                        <div class="content-card">
+                            <h2>1929: Young-Plan</h2>
+                            <p>Der Young-Plan war der letzte Reparationsplan der Weimarer Republik. Die wichtigsten Bestimmungen:</p>
+                            
+                            <ul>
+                                <li>Reduzierung der Gesamtsumme auf 112 Mrd. Reichsmark</li>
+                                <li>Zahlungen bis 1988 in festen Raten</li>
+                                <li>Aufhebung der internationalen Kontrollen</li>
+                                <li>Deutsche Souveränität wird gestärkt</li>
+                            </ul>
+                            
+                            <div class="buttons">
+                                <button class="button button-primary" onclick="vote('young', true)">Für den Young-Plan</button>
+                                <button class="button button-secondary" onclick="vote('young', false)">Gegen den Young-Plan</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+
+        updateStats();
+    </script>
+</body>
+</html>
