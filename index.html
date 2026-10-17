@@ -282,12 +282,22 @@
             }
         }
     </style>
+<style id="moodle-anpassung">
+/* Überarbeitung Oktober 2026: Barrierearmut und Moodle */
+:focus-visible{outline:3px solid #1d4ed8 !important;outline-offset:2px !important}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}}
+.mdl-hinweis{max-width:900px;margin:12px auto;padding:12px 16px;border-left:4px solid #1d4ed8;background:#eef3fb;color:#1f2a37;border-radius:6px;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;text-align:left}
+.mdl-hinweis b{font-weight:700}
+.mdl-bildquellen{max-width:900px;margin:24px auto;padding:8px 16px;font:13px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#444;text-align:left}
+.mdl-bildquellen a{color:#1d4ed8;word-break:break-all}
+</style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>Weimarer Republik: Außenpolitische Entscheidungen</h1>
             <p>Treffen Sie historische Entscheidungen und erleben Sie die Konsequenzen</p>
+<p style="font-size:.9em;opacity:.9">Die Zahlen sind vereinfachte Spielwerte, keine historischen Daten.</p>
         </div>
     </header>
 
@@ -433,7 +443,7 @@
             } else if (stats.nsdap >= 15) {
                 analysis = `<p>Die NSDAP konnte zwar an Einfluss gewinnen, aber die Weimarer Republik bleibt stabil. Ihre Entscheidungen haben die wirtschaftliche und politische Lage insgesamt stabilisiert, auch wenn nationalistische Kräfte noch immer eine Bedrohung darstellen.</p>`;
             } else {
-                analysis = `<p>Herzlichen Glückwunsch! Ihre Entscheidungen haben die Weimarer Republik gestärkt und den Aufstieg extremistischer Parteien verhindert. Die wirtschaftliche Erholung und internationale Anerkennung haben Deutschland stabilisiert.</p>`;
+                analysis = `<p>In Ihrem Spiel bleibt die NSDAP schwach. Die Außenpolitik hat Vertrauen geschaffen und die Wirtschaft entlastet.</p>`;
             }
             
             if (stats.wirtschaft < 0) {
@@ -442,12 +452,13 @@
                 analysis += `<p>Die Wirtschaft zeigt starkes Wachstum, was die Stabilität der Republik weiter festigt.</p>`;
             }
             
+            analysis += `<div style="margin-top:1rem;padding:1rem;border-left:4px solid #1d4ed8;background:#eef3fb"><strong>Was tatsächlich geschah:</strong> Die Reichsregierungen nahmen den Dawes-Plan (1924) an, unterzeichneten den Vertrag von Locarno (1925) und den Berliner Vertrag (1926), traten dem Völkerbund bei (1926) und stimmten dem Young-Plan (1929) zu. 1930 räumten die Alliierten das Rheinland. Trotzdem wuchs die NSDAP – von 2,6 % (1928) auf 18,3 % (1930) und 37,3 % (Juli 1932). Entscheidend waren vor allem die Weltwirtschaftskrise ab 1929, die Massenarbeitslosigkeit und die Hetze gegen die Republik. Außenpolitische Erfolge allein konnten die Republik nicht retten.<br><br><strong>Zum Nachdenken:</strong> Warum bildet ein Spiel, das nur Außenpolitik betrachtet, die Geschichte nur unvollständig ab?</div>`;
             return analysis;
         }
         
         function generateTimeline() {
             let timelineHTML = '';
-            historicalEvents.forEach(event => {
+            historicalEvents.slice().sort((a, b) => a.year - b.year).forEach(event => {
                 timelineHTML += `
                     <div class="timeline-item">
                         <div class="timeline-content">
